@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-const userSchema= new mongoose.Schema(
+import Mongoose from 'mongoose';
+ const userSchema= new Mongoose.Schema(
    {
     firstName:{
         type:String,
@@ -10,9 +10,18 @@ const userSchema= new mongoose.Schema(
         type:String,
         required:true,
     },
+    userImg:{
+        type:String,
+        default:"none"
+    },
     email:{
         type:String,
         required:true,
+        unique:true
+    },
+    isAdmin:{
+        type:Boolean,
+        default:false
     },
     phone:{
         type:String,
@@ -27,25 +36,26 @@ const userSchema= new mongoose.Schema(
         type:Number,
         default:0
     },
-    transactions:{
-       type: [
-        {
-            type:{enum:["withdrawal","transfer","deposit"]},
-            by:{type:String, default :"Current user"},
-            date:{type:Date, default:Date.now()},
-        }
-    ],
-    default:[]
-},
-
 pin:{
     type:Number
+    
+
+},
+
+transactions:{
+
+
+    type :Mongoose.Schema.Types.ObjectId,
+    ref:"transactions",
+
 
 },
     notifications:{
       type: [
         {
-            date:{type:Date, default:Date.now()},
+            date:{type:Date, 
+                default:()=>Date.now()
+            },
             message:String
     }
     ],
@@ -53,10 +63,12 @@ pin:{
 },
 // government id 
 GovId:{
-    id_Type:String,
+    type:String,
+    default:"none"
+
 
 }
 }
     
 )
-export default  mongoose.model("user",userSchema)
+export default  Mongoose.model("user",userSchema)
